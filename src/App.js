@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react'
 import logo from './logo.svg'
 import './App.css'
+import { connect } from 'react-redux'
 import { handleGetUsers } from './actions/users'
 
-import { connect } from 'react-redux'
+import { handleGetQuestions } from './actions/questions'
 
 const App = ({ dispatch }) => {
   useEffect(() => {
     dispatch(handleGetUsers())
+    dispatch(handleGetQuestions())
   }, [])
 
   return (
