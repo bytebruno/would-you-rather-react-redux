@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux'
 import users from './users'
 import questions from './questions'
+import snackbar from './snackbar'
 import { loadingBarReducer } from 'react-redux-loading'
 
 export default combineReducers({
   users,
   questions,
   loadingBar: loadingBarReducer,
+  snackbar,
 })

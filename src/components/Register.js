@@ -15,6 +15,7 @@ import { AccountCircle, Lock } from '@material-ui/icons'
 import { connect } from 'react-redux'
 
 import { handleAddUser } from '../actions/users'
+import { handleShowErrorSnackBar, handleShowSuccessSnackBar } from '../actions/snackbar'
 
 const useStyles = makeStyles({
   card: {},
@@ -69,8 +70,11 @@ const Register = ({ dispatch }) => {
 
   const handleSubmit = () => {
     dispatch(handleAddUser({ id: userId, name: userName, password })).then(
-      () => setDefaultState(),
-      (e) => console.error(e)
+      () => {
+        dispatch(handleShowSuccessSnackBar('User registered!'))
+        setDefaultState()
+      },
+      (e) => dispatch(handleShowErrorSnackBar(e))
     )
   }
 
