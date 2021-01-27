@@ -11,11 +11,13 @@ import {
   TextField,
 } from '@material-ui/core'
 
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 
 import { AccountCircle, Lock } from '@material-ui/icons'
 import { handleSigninUser } from '../actions/authedUser'
-import { handleShowErrorSnackBar, handleShowSuccessSnackBar } from '../actions/snackbar'
+import {
+  handleShowErrorSnackBar,
+} from '../actions/snackbar'
 
 const useStyles = makeStyles({
   card: {},
@@ -32,12 +34,16 @@ const useStyles = makeStyles({
   },
 })
 
-const Signin = ({dispatch}) => {
+const Signin = ({ dispatch, authedUser }) => {
   const classes = useStyles()
   const history = useHistory()
 
   const [userId, setUserId] = useState('')
   const [password, setPassword] = useState('')
+
+  if (authedUser !== null) {
+    history.push('/')
+  }
 
   const redirectToRegister = () => {
     history.push('/register')
@@ -46,7 +52,7 @@ const Signin = ({dispatch}) => {
   const handleSubmit = () => {
     dispatch(handleSigninUser(userId, password)).then(
       () => {
-        dispatch(handleShowSuccessSnackBar('LOGADO!'))
+        history.push('/')
       },
       (e) => dispatch(handleShowErrorSnackBar(e))
     )
@@ -121,4 +127,10 @@ const Signin = ({dispatch}) => {
   )
 }
 
-export default connect()(Signin)
+const mapStateToProps = ({ authedUser }) => {
+  return {
+    authedUser,
+  }
+}
+
+export default connect(mapStateToProps)(Signin)

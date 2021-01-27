@@ -12,6 +12,7 @@ import Nav from './Nav'
 import SnackBar from './SnackBar'
 import Signin from './Signin'
 import Register from './Register'
+import Home from './Home'
 
 const App = ({ dispatch, loading }) => {
   const classes = useStyles()
@@ -29,8 +30,11 @@ const App = ({ dispatch, loading }) => {
           <Nav />
           {loading ? null : (
             <Container maxWidth='sm' className={classes.container}>
-              <Route path='/login' exact component={Signin} />
-              <Route path='/register' exact component={Register} />
+              <Fragment>
+                <Route path='/signin' exact component={Signin} />
+                <Route path='/register' exact component={Register} />
+                <Route path='/' exact component={Home} />
+              </Fragment>
             </Container>
           )}
         </div>
@@ -46,8 +50,9 @@ const useStyles = makeStyles({
   },
 })
 
-const mapStateToProps = () => {
+const mapStateToProps = ({ loading, authedUser }) => {
   return {
+    authedUser,
     loading: false,
   }
 }
