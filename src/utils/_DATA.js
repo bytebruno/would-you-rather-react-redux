@@ -3,6 +3,7 @@ let users = {
       id: 'sarahedo',
       name: 'Sarah Edo',
       avatarURL: '',
+      password:'1234',
       answers: {
         "8xf0y6ziyjabvozdd253nd": 'optionOne',
         "6ni6ok3ym7mf1p33lnez": 'optionTwo',
@@ -15,6 +16,7 @@ let users = {
       id: 'tylermcginnis',
       name: 'Tyler McGinnis',
       avatarURL: '',
+      password:'1234',
       answers: {
         "vthrdm985a262al8qx3do": 'optionOne',
         "xj352vofupe1dqz9emx13r": 'optionTwo',
@@ -25,6 +27,7 @@ let users = {
       id: 'johndoe',
       name: 'John Doe',
       avatarURL:'' ,
+      password:'1234',
       answers: {
         "xj352vofupe1dqz9emx13r": 'optionOne',
         "vthrdm985a262al8qx3do": 'optionTwo',
@@ -167,6 +170,24 @@ let users = {
         }
   
         res(formattedQuestion)
+      }, 1000)
+    })
+  }
+
+  export function _addUser (user) {
+    return new Promise((res, rej) => {
+
+      if (users[user.id]) {
+        rej('The user ID already exists')
+      }
+  
+      setTimeout(() => {        
+        users = {
+          ...users,
+          [user.id]: user
+        }
+  
+        res(user)
       }, 1000)
     })
   }
