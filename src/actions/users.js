@@ -13,7 +13,6 @@ export const handleGetUsers = () => {
   }
 }
 
-
 const addUserAction = (user) => {
   return { type: ADD_USER, user }
 }

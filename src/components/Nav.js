@@ -16,6 +16,8 @@ import AccountCircle from '@material-ui/icons/AccountCircle'
 // import FormControlLabel from '@material-ui/core/FormControlLabel'
 // import FormGroup from '@material-ui/core/FormGroup'
 
+import {connect} from 'react-redux'
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,15 +31,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Nav = () => {
+const Nav = ({authedUser}) => {
   const classes = useStyles()
-  const [auth, setAuth] = React.useState(false)
+
   const [anchorEl, setAnchorEl] = React.useState(null)
   const open = Boolean(anchorEl)
-
-  const handleChange = (event) => {
-    setAuth(event.target.checked)
-  }
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget)
@@ -77,7 +75,7 @@ const Nav = () => {
           {/* <Typography variant='h6' className={classes.title}>
             Photos
           </Typography> */}
-          {auth && (
+          {authedUser && (
             <div>
               <IconButton
                 aria-label='account of current user'
@@ -114,4 +112,10 @@ const Nav = () => {
   )
 }
 
-export default Nav
+const mapStateToProps = ({authedUser}) => {
+  return {
+    authedUser
+  }
+}
+
+export default connect(mapStateToProps)(Nav)

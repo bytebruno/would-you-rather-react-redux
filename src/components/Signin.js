@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import {
   Card,
@@ -9,10 +9,13 @@ import {
   Typography,
   makeStyles,
   TextField,
-  FormControl,
 } from '@material-ui/core'
 
+import {connect} from 'react-redux'
+
 import { AccountCircle, Lock } from '@material-ui/icons'
+import { handleSigninUser } from '../actions/authedUser'
+import { handleShowErrorSnackBar, handleShowSuccessSnackBar } from '../actions/snackbar'
 
 const useStyles = makeStyles({
   card: {},
@@ -29,12 +32,24 @@ const useStyles = makeStyles({
   },
 })
 
-const Signin = () => {
+const Signin = ({dispatch}) => {
   const classes = useStyles()
   const history = useHistory()
-  
+
+  const [userId, setUserId] = useState('')
+  const [password, setPassword] = useState('')
+
   const redirectToRegister = () => {
     history.push('/register')
+  }
+
+  const handleSubmit = () => {
+    dispatch(handleSigninUser(userId, password)).then(
+      () => {
+        dispatch(handleShowSuccessSnackBar('LOGADO!'))
+      },
+      (e) => dispatch(handleShowErrorSnackBar(e))
+    )
   }
 
   return (
@@ -48,38 +63,45 @@ const Signin = () => {
             Example account: thor password: 1234
           </Typography>
           <form className={classes.root} noValidate autoComplete='off'>
-            <FormControl fullWidth margin='normal'>
-              <TextField
-                id='account'
-                label='ID'
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position='start'>
-                      <AccountCircle />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </FormControl>
-            <FormControl fullWidth margin='normal'>
-              <TextField
-                id='password'
-                label='Password'
-                type='password'
-                autoComplete='current-password'
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position='start'>
-                      <Lock />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </FormControl>
+            <TextField
+              id='account'
+              label='ID'
+              value={userId}
+              onChange={(e) => setUserId(e.target.value)}
+              fullWidth
+              margin='normal'
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    <AccountCircle />
+                  </InputAdornment>
+                ),
+              }}
+            />
+
+            <TextField
+              id='password'
+              label='Password'
+              type='password'
+              fullWidth
+              margin='normal'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete='current-password'
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    <Lock />
+                  </InputAdornment>
+                ),
+              }}
+            />
           </form>
         </CardContent>
         <CardActions className={classes.cardActions}>
-          <Button color='primary'>Login</Button>
+          <Button color='primary' onClick={handleSubmit}>
+            Login
+          </Button>
         </CardActions>
       </Card>
       <div className={classes.registerContainer}>
@@ -87,7 +109,11 @@ const Signin = () => {
           OR
         </Typography>
 
-        <Button color='primary' variant='contained' onClick={redirectToRegister}>
+        <Button
+          color='primary'
+          variant='contained'
+          onClick={redirectToRegister}
+        >
           Register
         </Button>
       </div>
@@ -95,4 +121,4 @@ const Signin = () => {
   )
 }
 
-export default Signin
+export default connect()(Signin)
