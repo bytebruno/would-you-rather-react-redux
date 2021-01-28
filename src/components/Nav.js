@@ -8,19 +8,15 @@ import {
   Button,
   Menu,
   Typography,
+  Avatar,
 } from '@material-ui/core'
 
-import AccountCircle from '@material-ui/icons/AccountCircle'
-// import Typography from '@material-ui/core/Typography'
-// import MenuIcon from '@material-ui/icons/Menu'
-// import Switch from '@material-ui/core/Switch'
-// import FormControlLabel from '@material-ui/core/FormControlLabel'
-// import FormGroup from '@material-ui/core/FormGroup'
+import { getAvatar } from '../utils/avatar-helper'
 
-import {Link} from 'react-router-dom'
 
-import {connect} from 'react-redux'
+import { Link } from 'react-router-dom'
 
+import { connect } from 'react-redux'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,11 +29,11 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   userName: {
-    fontSize: '0.9rem'
-  }
+    fontSize: '0.9rem',
+  },
 }))
 
-const Nav = ({authedUser}) => {
+const Nav = ({ authedUser }) => {
   const classes = useStyles()
 
   const [anchorEl, setAnchorEl] = React.useState(null)
@@ -53,34 +49,32 @@ const Nav = ({authedUser}) => {
 
   return (
     <div className={classes.root}>
-      {/* <FormGroup>
-        <FormControlLabel
-          control={
-            <Switch
-              checked={auth}
-              onChange={handleChange}
-              aria-label='login switch'
-            />
-          }
-          label={auth ? 'Logout' : 'Login'}
-        />
-      </FormGroup> */}
       <AppBar position='static'>
         <Toolbar>
-          <Button component={Link} to={'/'} color='inherit' className={classes.root}>Home</Button>
-          <Button component={Link} to={'/'} color='inherit' className={classes.root}>New Question</Button>
-          <Button component={Link} to={'/'} color='inherit' className={classes.root}>Leader Board</Button>
-          {/* <IconButton
-            edge='start'
-            className={classes.menuButton}
+          <Button
+            component={Link}
+            to={'/'}
             color='inherit'
-            aria-label='menu'
+            className={classes.root}
           >
-            <MenuIcon />
-          </IconButton> */}
-          {/* <Typography variant='h6' className={classes.title}>
-            Photos
-          </Typography> */}
+            Home
+          </Button>
+          <Button
+            component={Link}
+            to={'/'}
+            color='inherit'
+            className={classes.root}
+          >
+            New Question
+          </Button>
+          <Button
+            component={Link}
+            to={'/'}
+            color='inherit'
+            className={classes.root}
+          >
+            Leader Board
+          </Button>
           {authedUser && (
             <div>
               <IconButton
@@ -90,11 +84,12 @@ const Nav = ({authedUser}) => {
                 onClick={handleMenu}
                 color='inherit'
               >
-                <AccountCircle />
+                <Avatar alt={authedUser.name} src={getAvatar(authedUser.avatarURL)} />
               </IconButton>
-               <Typography component='span' className={classes.userName}>
-                 {authedUser.name}
-               </Typography>
+
+              <Typography component='span' className={classes.userName}>
+                {authedUser.name}
+              </Typography>
               <Menu
                 id='menu-appbar'
                 anchorEl={anchorEl}
@@ -121,9 +116,9 @@ const Nav = ({authedUser}) => {
   )
 }
 
-const mapStateToProps = ({authedUser}) => {
+const mapStateToProps = ({ authedUser }) => {
   return {
-    authedUser
+    authedUser,
   }
 }
 

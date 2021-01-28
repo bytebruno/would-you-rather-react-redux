@@ -11,6 +11,8 @@ import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import { red } from '@material-ui/core/colors'
 
+
+
 const useStyles = makeStyles((theme) => ({
   root: {
     // maxWidth: 345,
@@ -27,11 +29,12 @@ const useStyles = makeStyles((theme) => ({
     // paddingTop: '56.25%', // 16:9
   },
   avatar: {
-    backgroundColor: red[500],
+    width:60,
+    height:60
   },
 }))
 
-const QuestionPreview = ({ question, authorName }) => {
+const QuestionPreview = ({ question, authorName, userAvatar }) => {
   const classes = useStyles()
   console.log(question)
 
@@ -41,9 +44,7 @@ const QuestionPreview = ({ question, authorName }) => {
     <Card className={classes.root}>
       <CardHeader
         avatar={
-          <Avatar aria-label='recipe' className={classes.avatar}>
-            {authorName[0]}
-          </Avatar>
+          <Avatar aria-label='recipe' className={classes.avatar} src={userAvatar} />
         }
         title={`${authorName} asks:`}
         subheader={new Date(question.timestamp).toLocaleDateString("en-US")}

@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 
 import QuestionPreview from './QuestionPreview'
+import { getAvatar} from '../utils/avatar-helper'
 
 import { connect } from 'react-redux'
 
@@ -58,6 +59,7 @@ const QuestionTabs = ({
               key={questions[id].id}
               question={questions[id]}
               authorName={users[questions[id].author].name}
+              userAvatar={getAvatar(users[questions[id].author].avatarURL)}
             />
           ))}
       </TabPanel>
@@ -68,6 +70,7 @@ const QuestionTabs = ({
               key={questions[id].id}
               question={questions[id]}
               authorName={users[questions[id].author].name}
+              userAvatar={getAvatar(users[questions[id].author].avatarURL)}
             />
           ))}
       </TabPanel>
