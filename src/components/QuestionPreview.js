@@ -45,8 +45,8 @@ const QuestionPreview = ({ question, authorName }) => {
             {authorName[0]}
           </Avatar>
         }
-        title={authorName + ' asks:'}
-        subheader='September 14, 2016'
+        title={`${authorName} asks:`}
+        subheader={new Date(question.timestamp).toLocaleDateString("en-US")}
       />
       <CardMedia
         className={classes.media}
@@ -54,7 +54,7 @@ const QuestionPreview = ({ question, authorName }) => {
         title='Paella dish'
       />
       <CardContent className={classes.cardContent}>
-        <Typography variant='h6' color='default' component='h6'>
+        <Typography variant='h6' component='h6'>
           Would you rather?
         </Typography>
         <Typography variant='body2' color='secondary' component='p'>

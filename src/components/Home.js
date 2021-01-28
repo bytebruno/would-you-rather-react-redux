@@ -10,7 +10,10 @@ const Home = ({authedUser}) => {
 
     const history = useHistory()
 
-    if (authedUser === null) history.push('/signin')
+    if (authedUser === null) {
+        history.push('/signin')
+        return null;
+    } 
 
     return (
         <QuestionTabs />

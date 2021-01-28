@@ -10,21 +10,26 @@ import QuestionPreview from './QuestionPreview'
 
 import { connect } from 'react-redux'
 
-const QuestionTabs = ({ questions, authedUser, users }) => {
+const QuestionTabs = ({
+  questions,
+  authedUser,
+  users,
+  orderedQuestionsIds,
+}) => {
   const classes = useStyles()
   const [value, setValue] = React.useState(0)
-  
+
   if (questions === null || questions === undefined) return null
-  
-  const answeredQuestions = Object.values(questions).filter((question) =>
-    Object.keys(authedUser.answers).includes(question.id)
+
+  const answeredQuestionsIds = orderedQuestionsIds.filter((questionId) =>
+    Object.keys(authedUser.answers).includes(questionId)
   )
-  const unansweredQuestions = Object.values(questions).filter(
-    (question) => !Object.keys(authedUser.answers).includes(question.id)
+  const unansweredQuestionsIds = orderedQuestionsIds.filter(
+    (questionId) => !Object.keys(authedUser.answers).includes(questionId)
   )
 
-  console.log(answeredQuestions)
-  console.log(unansweredQuestions)
+  console.log(answeredQuestionsIds)
+  console.log(unansweredQuestionsIds)
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
@@ -47,20 +52,22 @@ const QuestionTabs = ({ questions, authedUser, users }) => {
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
-        {unansweredQuestions &&
-          unansweredQuestions.map((question) => (
+        {unansweredQuestionsIds &&
+          unansweredQuestionsIds.map((id) => (
             <QuestionPreview
-              question={question}
-              authorName={users[question.author].name}
+              key={questions[id].id}
+              question={questions[id]}
+              authorName={users[questions[id].author].name}
             />
           ))}
       </TabPanel>
       <TabPanel value={value} index={1}>
-        {answeredQuestions &&
-          answeredQuestions.map((question) => (
+        {answeredQuestionsIds &&
+          answeredQuestionsIds.map((id) => (
             <QuestionPreview
-              question={question}
-              authorName={users[question.author].name}
+              key={questions[id].id}
+              question={questions[id]}
+              authorName={users[questions[id].author].name}
             />
           ))}
       </TabPanel>
@@ -70,6 +77,11 @@ const QuestionTabs = ({ questions, authedUser, users }) => {
 
 const mapStateToProps = ({ questions, authedUser, users }) => {
   return {
+    orderedQuestionsIds: questions
+      ? Object.keys(questions).sort(
+          (a, b) => questions[b].timestamp - questions[a].timestamp
+        )
+      : [],
     questions,
     users,
     authedUser,
@@ -98,7 +110,7 @@ const TabPanel = (props) => {
     >
       {value === index && (
         <Box p={3}>
-          <Typography>{children}</Typography>
+          <Typography component='div'>{children}</Typography>
         </Box>
       )}
     </div>

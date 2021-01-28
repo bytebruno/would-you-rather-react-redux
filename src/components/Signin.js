@@ -75,6 +75,7 @@ const Signin = ({ dispatch, authedUser }) => {
               value={userId}
               onChange={(e) => setUserId(e.target.value)}
               fullWidth
+              autoComplete='username'
               margin='normal'
               InputProps={{
                 startAdornment: (

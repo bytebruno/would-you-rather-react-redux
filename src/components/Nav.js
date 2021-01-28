@@ -7,6 +7,7 @@ import {
   MenuItem,
   Button,
   Menu,
+  Typography,
 } from '@material-ui/core'
 
 import AccountCircle from '@material-ui/icons/AccountCircle'
@@ -15,6 +16,8 @@ import AccountCircle from '@material-ui/icons/AccountCircle'
 // import Switch from '@material-ui/core/Switch'
 // import FormControlLabel from '@material-ui/core/FormControlLabel'
 // import FormGroup from '@material-ui/core/FormGroup'
+
+import {Link} from 'react-router-dom'
 
 import {connect} from 'react-redux'
 
@@ -29,6 +32,9 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
+  userName: {
+    fontSize: '0.9rem'
+  }
 }))
 
 const Nav = ({authedUser}) => {
@@ -61,9 +67,9 @@ const Nav = ({authedUser}) => {
       </FormGroup> */}
       <AppBar position='static'>
         <Toolbar>
-          <Button color='inherit' className={classes.root}>Home</Button>
-          <Button color='inherit' className={classes.root}>New Question</Button>
-          <Button color='inherit' className={classes.root}>Leader Board</Button>
+          <Button component={Link} to={'/'} color='inherit' className={classes.root}>Home</Button>
+          <Button component={Link} to={'/'} color='inherit' className={classes.root}>New Question</Button>
+          <Button component={Link} to={'/'} color='inherit' className={classes.root}>Leader Board</Button>
           {/* <IconButton
             edge='start'
             className={classes.menuButton}
@@ -86,6 +92,9 @@ const Nav = ({authedUser}) => {
               >
                 <AccountCircle />
               </IconButton>
+               <Typography component='span' className={classes.userName}>
+                 {authedUser.name}
+               </Typography>
               <Menu
                 id='menu-appbar'
                 anchorEl={anchorEl}
