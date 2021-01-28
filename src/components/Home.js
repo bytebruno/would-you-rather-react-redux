@@ -2,6 +2,8 @@ import React from 'react'
 import {useHistory} from 'react-router-dom'
 import {connect} from 'react-redux'
 
+import QuestionTabs from './QuestionTabs'
+
 
 
 const Home = ({authedUser}) => {
@@ -10,7 +12,9 @@ const Home = ({authedUser}) => {
 
     if (authedUser === null) history.push('/signin')
 
-    return <h2>Home</h2>
+    return (
+        <QuestionTabs />
+    )
 }
 
 const mapStateToProps = ({authedUser}) => {

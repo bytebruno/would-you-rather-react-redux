@@ -183,6 +183,11 @@ export function _addUser(user) {
       if (users[user.id]) {
         rej('The user ID already exists')
       }
+
+      user = {
+        ...user, questions: [], answers: {}
+      }
+      
       users = {
         ...users,
         [user.id]: user,
