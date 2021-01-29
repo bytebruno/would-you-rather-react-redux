@@ -1,21 +1,16 @@
 import React from 'react'
-
+import {Link} from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
-import CardMedia from '@material-ui/core/CardMedia'
 import CardContent from '@material-ui/core/CardContent'
 import CardActions from '@material-ui/core/CardActions'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
-import { red } from '@material-ui/core/colors'
-
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    // maxWidth: 345,
     marginBottom: 40,
   },
   cardActions: {
@@ -24,13 +19,15 @@ const useStyles = makeStyles((theme) => ({
   cardContent: {
     textAlign: 'center',
   },
-  media: {
-    height: 0,
-    // paddingTop: '56.25%', // 16:9
+  wouldText: {
+    fontSize: '1.60rem'
+  },
+  header: {
+    paddingBottom: 0,
   },
   avatar: {
-    width:60,
-    height:60
+    width: 60,
+    height: 60,
   },
 }))
 
@@ -43,20 +40,20 @@ const QuestionPreview = ({ question, authorName, userAvatar }) => {
   return (
     <Card className={classes.root} raised>
       <CardHeader
+        className={classes.header}
         avatar={
-          <Avatar aria-label='recipe' className={classes.avatar} src={userAvatar} />
+          <Avatar
+            aria-label='recipe'
+            className={classes.avatar}
+            src={userAvatar}
+          />
         }
         title={`${authorName} asks:`}
-        subheader={new Date(question.timestamp).toLocaleDateString("en-US")}
-      />
-      <CardMedia
-        className={classes.media}
-        image='/static/images/cards/paella.jpg'
-        title='Paella dish'
+        subheader={new Date(question.timestamp).toLocaleDateString('en-US')}
       />
       <CardContent className={classes.cardContent}>
-        <Typography variant='h6' component='h6'>
-          Would you rather?
+        <Typography variant='h6' component='h6' className={classes.wouldText}>
+          Would you rather
         </Typography>
         <Typography variant='body2' color='secondary' component='p'>
           ...
@@ -67,7 +64,7 @@ const QuestionPreview = ({ question, authorName, userAvatar }) => {
         </Typography>
       </CardContent>
       <CardActions disableSpacing className={classes.cardActions}>
-        <Button color='primary' onClick={() => {}}>
+        <Button component={Link} to={`/question/${question.id}`} color='primary'>
           View Poll
         </Button>
       </CardActions>

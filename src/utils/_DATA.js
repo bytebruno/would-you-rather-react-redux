@@ -185,9 +185,11 @@ export function _addUser(user) {
       }
 
       user = {
-        ...user, questions: [], answers: {}
+        ...user,
+        questions: [],
+        answers: {},
       }
-      
+
       users = {
         ...users,
         [user.id]: user,
@@ -200,25 +202,39 @@ export function _addUser(user) {
 
 export const _signinUser = (id, password) => {
   return new Promise((res, rej) => {
-    setTimeout(() => {
-      if (!users[id] || users[id].password !== password) {
-         return rej('ID or password is incorrect')
-      }
+    setTimeout(
+      () => {
+        if (!users[id] || users[id].password !== password) {
+          return rej('ID or password is incorrect')
+        }
 
-      return res(users[id])
-    }, 1000, users, id, password)
+        return res(users[id])
+      },
+      1000,
+      users,
+      id,
+      password
+    )
   })
 }
 
-export function _saveQuestionAnswer({ authedUser, qid, answer }) {
+export const _getLastAuthedUserData = (authedUserId) => {
+  return new Promise((res, rej) => {
+    setTimeout(() => {
+      return res(users[authedUserId])
+    }, 1000)
+  })
+}
+
+export function _saveQuestionAnswer({ authedUserId, qid, answer }) {
   return new Promise((res, rej) => {
     setTimeout(() => {
       users = {
         ...users,
-        [authedUser]: {
-          ...users[authedUser],
+        [authedUserId]: {
+          ...users[authedUserId],
           answers: {
-            ...users[authedUser].answers,
+            ...users[authedUserId].answers,
             [qid]: answer,
           },
         },
@@ -230,7 +246,7 @@ export function _saveQuestionAnswer({ authedUser, qid, answer }) {
           ...questions[qid],
           [answer]: {
             ...questions[qid][answer],
-            votes: questions[qid][answer].votes.concat([authedUser]),
+            votes: questions[qid][answer].votes.concat([authedUserId]),
           },
         },
       }
