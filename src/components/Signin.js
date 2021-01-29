@@ -15,9 +15,7 @@ import { connect } from 'react-redux'
 
 import { AccountCircle, Lock } from '@material-ui/icons'
 import { handleSigninUser } from '../actions/authedUser'
-import {
-  handleShowErrorSnackBar,
-} from '../actions/snackbar'
+import { handleShowErrorSnackBar } from '../actions/snackbar'
 
 const useStyles = makeStyles({
   card: {},
@@ -25,12 +23,13 @@ const useStyles = makeStyles({
     justifyContent: 'flex-end',
   },
   registerContainer: {
-    marginTop: 40,
+    marginTop: 100,
     display: 'flex',
     flexDirection: 'column',
   },
   orLabel: {
     alignSelf: 'center',
+    marginBottom: 10,
   },
 })
 
@@ -66,7 +65,7 @@ const Signin = ({ dispatch, authedUser }) => {
             Please Sign in
           </Typography>
           <Typography variant='body2' color='textSecondary' component='p'>
-            Example account: thor password: 1234
+            ID: sarahedo | johndoe | tylermcginnis - password: 1234
           </Typography>
           <form className={classes.root} noValidate autoComplete='off'>
             <TextField
@@ -107,18 +106,18 @@ const Signin = ({ dispatch, authedUser }) => {
         </CardContent>
         <CardActions className={classes.cardActions}>
           <Button color='primary' onClick={handleSubmit}>
-            Login
+            Sign In
           </Button>
         </CardActions>
       </Card>
       <div className={classes.registerContainer}>
-        <Typography variant='h6' component='h2' className={classes.orLabel}>
+        <Typography variant='h6' component='h2' color='primary' className={classes.orLabel}>
           OR
         </Typography>
 
         <Button
           color='primary'
-          variant='contained'
+          variant='outlined'
           onClick={redirectToRegister}
         >
           Register

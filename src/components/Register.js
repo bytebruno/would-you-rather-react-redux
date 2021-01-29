@@ -8,6 +8,7 @@ import {
   Typography,
   makeStyles,
   TextField,
+  Avatar,
 } from '@material-ui/core'
 
 import { AccountCircle, Lock } from '@material-ui/icons'
@@ -15,7 +16,13 @@ import { AccountCircle, Lock } from '@material-ui/icons'
 import { connect } from 'react-redux'
 
 import { handleAddUser } from '../actions/users'
-import { handleShowErrorSnackBar, handleShowSuccessSnackBar } from '../actions/snackbar'
+import {
+  handleShowErrorSnackBar,
+  handleShowSuccessSnackBar,
+} from '../actions/snackbar'
+import { getAvatar } from '../utils/avatar-helper'
+
+import AvatarModal from './AvatarModal'
 
 const useStyles = makeStyles({
   card: {},
@@ -30,6 +37,17 @@ const useStyles = makeStyles({
   yourIdLabel: {
     fontSize: '0.8rem',
   },
+  avatarContainer: {
+    display: 'flex',
+    marginTop: 40,
+  },
+  avatarButton: {
+    marginLeft: 20,
+  },
+  avatar:{
+    width:50,
+    height:50
+  }
 })
 
 const Register = ({ dispatch }) => {
@@ -38,6 +56,11 @@ const Register = ({ dispatch }) => {
   const [userId, setUserId] = useState('')
   const [userName, setUserName] = useState('')
   const [password, setPassword] = useState('')
+
+  const [userAvatar, setUserAvatar] = useState('av1')
+  const [userAvatarImage, setUserAvatarImage] = useState(getAvatar('av1'))
+
+  const [open, setOpen] = useState(false)
 
   const handleUserNameInput = (e) => {
     let inputValue = e.target.value
@@ -66,16 +89,27 @@ const Register = ({ dispatch }) => {
     setUserId('')
     setUserName('')
     setPassword('')
+    setUserAvatar('')
+    setUserAvatarImage(getAvatar('av1'))
   }
 
   const handleSubmit = () => {
-    dispatch(handleAddUser({ id: userId, name: userName, password })).then(
+    dispatch(handleAddUser({ id: userId, name: userName, password, avatarURL:userAvatar })).then(
       () => {
         dispatch(handleShowSuccessSnackBar('User registered!'))
         setDefaultState()
       },
       (e) => dispatch(handleShowErrorSnackBar(e))
     )
+  }
+
+  const handleClose = (name) => {
+    if (typeof name === 'string') {
+      setUserAvatarImage(getAvatar(name))
+      setUserAvatar(name)
+    } 
+
+    setOpen(false)
   }
 
   return (
@@ -125,6 +159,16 @@ const Register = ({ dispatch }) => {
               }}
             />
           </form>
+          <div className={classes.avatarContainer}>
+            <Avatar alt='user avatar' src={userAvatarImage} className={classes.avatar} />
+            <Button
+              type='button'
+              onClick={() => setOpen(true)}
+              className={classes.avatarButton}
+            >
+              Choose your avatar
+            </Button>
+          </div>
         </CardContent>
         <CardActions className={classes.cardActions}>
           <Button color='primary' onClick={handleSubmit}>
@@ -132,6 +176,7 @@ const Register = ({ dispatch }) => {
           </Button>
         </CardActions>
       </Card>
+      <AvatarModal open={open} handleClose={handleClose} />
     </Fragment>
   )
 }

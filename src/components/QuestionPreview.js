@@ -41,7 +41,7 @@ const QuestionPreview = ({ question, authorName, userAvatar }) => {
   if (question === undefined) return null
 
   return (
-    <Card className={classes.root}>
+    <Card className={classes.root} raised>
       <CardHeader
         avatar={
           <Avatar aria-label='recipe' className={classes.avatar} src={userAvatar} />

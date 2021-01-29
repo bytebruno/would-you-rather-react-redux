@@ -80,11 +80,9 @@ const QuestionTabs = ({
 
 const mapStateToProps = ({ questions, authedUser, users }) => {
   return {
-    orderedQuestionsIds: questions
-      ? Object.keys(questions).sort(
+    orderedQuestionsIds: Object.keys(questions).sort(
           (a, b) => questions[b].timestamp - questions[a].timestamp
-        )
-      : [],
+        ),
     questions,
     users,
     authedUser,
