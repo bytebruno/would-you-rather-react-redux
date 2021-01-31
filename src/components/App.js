@@ -33,7 +33,6 @@ const App = ({ dispatch, loading }) => {
           <Container maxWidth='sm' className={classes.container}>
             {loading ? null : (
               <Fragment>
-                <GuardedRoute path='/add' exact component={QuestionCreate} />
                 <GuardedRoute
                   path='/leaderboard'
                   exact
@@ -42,6 +41,7 @@ const App = ({ dispatch, loading }) => {
                 <GuardedRoute path='/' exact component={Home} />
               </Fragment>
             )}
+            <GuardedRoute path='/add' exact component={QuestionCreate} />
             <GuardedRoute path='/question/:id' exact component={Question} />
             <Route path='/signin' exact component={Signin} />
             <Route path='/register' exact component={Register} />

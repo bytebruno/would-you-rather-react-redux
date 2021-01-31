@@ -1,4 +1,5 @@
 import { getQuestions, saveQuestionAnswer, addQuestion } from '../utils/api'
+import { showLoading } from 'react-redux-loading'
 
 export const RECEIVE_QUESTIONS = 'RECEIVE_QUESTIONS'
 export const SAVE_QUESTION_ANSWER = 'SAVE_QUESTION_ANSWER'
@@ -30,6 +31,7 @@ const addQuestionAction = (question) => {
 
 export const handleAddQuestion = (question) => {
   return (dispatch) => {
+    dispatch(showLoading())
     return addQuestion(question).then((savedQuestion) => dispatch(addQuestionAction(savedQuestion)))
   }
 }

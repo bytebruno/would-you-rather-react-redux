@@ -19,6 +19,7 @@ import {
 
 import { handleAddQuestion } from '../actions/questions'
 import { handleGetUsers } from '../actions/users'
+import { hideLoading } from 'react-redux-loading'
 
 const useStyles = makeStyles({
   form: { textAlign: 'center' },
@@ -37,7 +38,7 @@ const useStyles = makeStyles({
   },
 })
 
-const QuestionCreate = ({ dispatch, authedUser }) => {
+const QuestionCreate = ({ dispatch, authedUser, loading }) => {
   const classes = useStyles()
   const history = useHistory()
 
@@ -73,12 +74,12 @@ const QuestionCreate = ({ dispatch, authedUser }) => {
       })
     ).then(
       () => {
-        dispatch(handleShowSuccessSnackBar('Question created! Redirecting...'))
-        dispatch(handleGetUsers())
-        setTimeout(() => {
-          history.push('/')
-        }, 2000)
         setDefaultState()
+        dispatch(handleShowSuccessSnackBar('Question created! Redirecting...'))
+        dispatch(handleGetUsers()).then(() => {
+          dispatch(hideLoading())
+          history.push('/')
+        })
       },
       (e) => dispatch(handleShowErrorSnackBar(e))
     )
@@ -130,7 +131,7 @@ const QuestionCreate = ({ dispatch, authedUser }) => {
           </form>
         </CardContent>
         <CardActions className={classes.cardActions}>
-          <Button color='primary' onClick={handleSubmit}>
+          <Button color='primary' onClick={handleSubmit} disabled={loading}>
             Add Question
           </Button>
         </CardActions>
@@ -139,8 +140,8 @@ const QuestionCreate = ({ dispatch, authedUser }) => {
   )
 }
 
-const mapStateToProps = ({ authedUser }) => {
-  return { authedUser }
+const mapStateToProps = ({ authedUser, loadingBar }) => {
+  return { authedUser, loading: loadingBar.default === 1 ? true : false }
 }
 
 export default connect(mapStateToProps)(QuestionCreate)
