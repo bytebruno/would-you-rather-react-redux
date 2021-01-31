@@ -14,6 +14,7 @@ import Signin from './Signin'
 import Register from './Register'
 import Home from './Home'
 import Question from './Question'
+import GuardedRoute from './GuardedRoute'
 
 const App = ({ dispatch, loading }) => {
   const classes = useStyles()
@@ -34,8 +35,8 @@ const App = ({ dispatch, loading }) => {
               <Fragment>
                 <Route path='/signin' exact component={Signin} />
                 <Route path='/register' exact component={Register} />
-                <Route path='/question/:id' exact component={Question} />
-                <Route path='/' exact component={Home} />
+                <GuardedRoute path='/question/:id' exact component={Question} />
+                <GuardedRoute path='/' exact component={Home} />
               </Fragment>
             </Container>
           )}

@@ -33,7 +33,6 @@ const useStyles = makeStyles((theme) => ({
 
 const QuestionPreview = ({ question, authorName, userAvatar }) => {
   const classes = useStyles()
-  console.log(question)
 
   if (question === undefined) return null
 

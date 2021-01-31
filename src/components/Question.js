@@ -1,5 +1,5 @@
 import React from 'react'
-import { withRouter, useHistory } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
@@ -44,16 +44,8 @@ const useStyles = makeStyles((theme) => ({
 
 const Question = ({ dispatch, question, users, authedUser }) => {
   const classes = useStyles()
-  const history = useHistory()
 
   const [value, setValue] = React.useState('optionOne')
-
-  //console.log(question)
-
-  if (authedUser === null || question === undefined) {
-    history.push('/signin')
-    return null
-  }
 
   const handleChange = (event) => {
     setValue(event.target.value)

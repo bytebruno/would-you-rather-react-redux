@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import {
   Card,
@@ -40,9 +40,11 @@ const Signin = ({ dispatch, authedUser }) => {
   const [userId, setUserId] = useState('')
   const [password, setPassword] = useState('')
 
-  if (authedUser !== null) {
-    history.push('/')
-  }
+  useEffect(() => {
+    if (authedUser !== null) {
+      history.push('/')
+    }
+  }, [authedUser, history])
 
   const redirectToRegister = () => {
     history.push('/register')
@@ -52,6 +54,7 @@ const Signin = ({ dispatch, authedUser }) => {
     dispatch(handleSigninUser(userId, password)).then(
       () => {
         history.push('/')
+        return null
       },
       (e) => dispatch(handleShowErrorSnackBar(e))
     )
@@ -111,15 +114,16 @@ const Signin = ({ dispatch, authedUser }) => {
         </CardActions>
       </Card>
       <div className={classes.registerContainer}>
-        <Typography variant='h6' component='h2' color='primary' className={classes.orLabel}>
+        <Typography
+          variant='h6'
+          component='h2'
+          color='primary'
+          className={classes.orLabel}
+        >
           OR
         </Typography>
 
-        <Button
-          color='primary'
-          variant='outlined'
-          onClick={redirectToRegister}
-        >
+        <Button color='primary' variant='outlined' onClick={redirectToRegister}>
           Register
         </Button>
       </div>

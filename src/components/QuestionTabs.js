@@ -19,8 +19,8 @@ const QuestionTabs = ({
 }) => {
   const classes = useStyles()
   const [value, setValue] = React.useState(0)
-
-  if (questions === null || questions === undefined) return null
+ 
+  if (orderedQuestionsIds.length  === 0) return null
 
   const answeredQuestionsIds = orderedQuestionsIds.filter((questionId) =>
     Object.keys(authedUser.answers).includes(questionId)
@@ -28,9 +28,6 @@ const QuestionTabs = ({
   const unansweredQuestionsIds = orderedQuestionsIds.filter(
     (questionId) => !Object.keys(authedUser.answers).includes(questionId)
   )
-
-  console.log(answeredQuestionsIds)
-  console.log(unansweredQuestionsIds)
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
