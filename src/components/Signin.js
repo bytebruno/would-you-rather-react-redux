@@ -16,6 +16,7 @@ import { connect } from 'react-redux'
 import { AccountCircle, Lock } from '@material-ui/icons'
 import { handleSigninUser } from '../actions/authedUser'
 import { handleShowErrorSnackBar } from '../actions/snackbar'
+import { hideLoading } from 'react-redux-loading'
 
 const useStyles = makeStyles({
   card: {},
@@ -33,7 +34,7 @@ const useStyles = makeStyles({
   },
 })
 
-const Signin = ({ dispatch, authedUser }) => {
+const Signin = ({ dispatch, authedUser, loading }) => {
   const classes = useStyles()
   const history = useHistory()
 
@@ -56,7 +57,10 @@ const Signin = ({ dispatch, authedUser }) => {
         history.push('/')
         return null
       },
-      (e) => dispatch(handleShowErrorSnackBar(e))
+      (e) => {
+        dispatch(handleShowErrorSnackBar(e))
+        dispatch(hideLoading())
+      }
     )
   }
 
@@ -108,7 +112,7 @@ const Signin = ({ dispatch, authedUser }) => {
           </form>
         </CardContent>
         <CardActions className={classes.cardActions}>
-          <Button color='primary' onClick={handleSubmit}>
+          <Button color='primary' onClick={handleSubmit}  disabled={loading}>
             Sign In
           </Button>
         </CardActions>
@@ -123,7 +127,7 @@ const Signin = ({ dispatch, authedUser }) => {
           OR
         </Typography>
 
-        <Button color='primary' variant='outlined' onClick={redirectToRegister}>
+        <Button color='primary' variant='outlined' onClick={redirectToRegister} disabled={loading}>
           Register
         </Button>
       </div>
@@ -131,9 +135,10 @@ const Signin = ({ dispatch, authedUser }) => {
   )
 }
 
-const mapStateToProps = ({ authedUser }) => {
+const mapStateToProps = ({ authedUser, loadingBar }) => {
   return {
     authedUser,
+    loading: loadingBar.default === 1 ? true : false
   }
 }
 

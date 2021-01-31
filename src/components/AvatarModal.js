@@ -41,7 +41,9 @@ const useStyles = makeStyles((theme) => ({
 const AvatarModal = ({ open, handleClose }) => {
   const classes = useStyles()
   const [modalStyle] = useState(getModalStyle)
-
+  
+  if (open === undefined) return null
+  
   const body = (
     <div
       style={modalStyle}

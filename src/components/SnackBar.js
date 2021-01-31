@@ -30,7 +30,7 @@ const SnackBar = ({ dispatch, showSuccess, showError, message }) => {
     if (showSuccess) {
       successTimeout = setTimeout(() => {
         dispatch(handleHideSuccessSnackBar())
-      }, 3000)
+      }, 2000)
       return () => clearTimeout(successTimeout)
     }
 

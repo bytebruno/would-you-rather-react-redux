@@ -109,7 +109,7 @@ const Nav = ({ dispatch, authedUser }) => {
                 open={open}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleLogout}>Signout</MenuItem>
+                <MenuItem onClick={handleLogout}>Sign Out</MenuItem>
               </Menu>
             </div>
           )}

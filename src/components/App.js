@@ -3,8 +3,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { makeStyles, Container } from '@material-ui/core'
 
 import { connect } from 'react-redux'
-import { handleGetUsers } from '../actions/users'
-import { handleGetQuestions } from '../actions/questions'
+import { handleInitialData } from '../actions/shared'
 
 import LoadingBar from 'react-redux-loading'
 
@@ -22,28 +21,31 @@ const App = ({ dispatch, loading }) => {
   const classes = useStyles()
 
   useEffect(() => {
-    dispatch(handleGetUsers())
-    dispatch(handleGetQuestions())
+    dispatch(handleInitialData())
   }, [dispatch])
 
   return (
     <Router>
       <Fragment>
-        <LoadingBar />
+        <LoadingBar style={{ backgroundColor: 'white' }} />
         <div>
           <Nav />
-          {loading ? null : (
-            <Container maxWidth='sm' className={classes.container}>
+          <Container maxWidth='sm' className={classes.container}>
+            {loading ? null : (
               <Fragment>
-                <Route path='/signin' exact component={Signin} />
-                <Route path='/register' exact component={Register} />
-                <GuardedRoute path='/question/:id' exact component={Question} />
                 <GuardedRoute path='/add' exact component={QuestionCreate} />
-                <GuardedRoute path='/leaderboard' exact component={Leaderboard} />
+                <GuardedRoute
+                  path='/leaderboard'
+                  exact
+                  component={Leaderboard}
+                />
                 <GuardedRoute path='/' exact component={Home} />
               </Fragment>
-            </Container>
-          )}
+            )}
+            <GuardedRoute path='/question/:id' exact component={Question} />
+            <Route path='/signin' exact component={Signin} />
+            <Route path='/register' exact component={Register} />
+          </Container>
         </div>
       </Fragment>
       <SnackBar />
@@ -57,10 +59,10 @@ const useStyles = makeStyles({
   },
 })
 
-const mapStateToProps = ({ loading, authedUser }) => {
+const mapStateToProps = ({ authedUser, loadingBar }) => {
   return {
     authedUser,
-    loading: false,
+    loading: loadingBar.default === 1 ? true : false
   }
 }
 

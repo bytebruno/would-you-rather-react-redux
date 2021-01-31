@@ -12,10 +12,12 @@ import {
 } from '@material-ui/core'
 
 import { AccountCircle, Lock } from '@material-ui/icons'
-
+import { hideLoading } from 'react-redux-loading'
 import { connect } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 
 import { handleAddUser } from '../actions/users'
+import { handleSigninUser } from '../actions/authedUser'
 import {
   handleShowErrorSnackBar,
   handleShowSuccessSnackBar,
@@ -44,14 +46,15 @@ const useStyles = makeStyles({
   avatarButton: {
     marginLeft: 20,
   },
-  avatar:{
-    width:50,
-    height:50
-  }
+  avatar: {
+    width: 50,
+    height: 50,
+  },
 })
 
-const Register = ({ dispatch }) => {
+const Register = ({ dispatch, loading }) => {
   const classes = useStyles()
+  const history = useHistory()
 
   const [userId, setUserId] = useState('')
   const [userName, setUserName] = useState('')
@@ -94,12 +97,33 @@ const Register = ({ dispatch }) => {
   }
 
   const handleSubmit = () => {
-    dispatch(handleAddUser({ id: userId, name: userName, password, avatarURL:userAvatar })).then(
-      () => {
-        dispatch(handleShowSuccessSnackBar('User registered!'))
+    dispatch(
+      handleAddUser({
+        id: userId,
+        name: userName,
+        password,
+        avatarURL: userAvatar,
+      })
+    ).then(
+      (action) => {
+        dispatch(handleShowSuccessSnackBar('User registered! Redirecting...'))
+        dispatch(handleSigninUser(action.user.id, action.user.password)).then(
+          () => {
+            dispatch(hideLoading())
+            history.push('/')
+            return null
+          },
+          (e) => {
+            dispatch(hideLoading())
+            dispatch(handleShowErrorSnackBar(e))
+          }
+        )
         setDefaultState()
       },
-      (e) => dispatch(handleShowErrorSnackBar(e))
+      (e) => {
+        dispatch(hideLoading())
+        dispatch(handleShowErrorSnackBar(e))
+      }
     )
   }
 
@@ -107,7 +131,7 @@ const Register = ({ dispatch }) => {
     if (typeof name === 'string') {
       setUserAvatarImage(getAvatar(name))
       setUserAvatar(name)
-    } 
+    }
 
     setOpen(false)
   }
@@ -160,18 +184,23 @@ const Register = ({ dispatch }) => {
             />
           </form>
           <div className={classes.avatarContainer}>
-            <Avatar alt='user avatar' src={userAvatarImage} className={classes.avatar} />
+            <Avatar
+              alt='user avatar'
+              src={userAvatarImage}
+              className={classes.avatar}
+            />
             <Button
               type='button'
               onClick={() => setOpen(true)}
               className={classes.avatarButton}
+              disabled={loading}
             >
               Choose your avatar
             </Button>
           </div>
         </CardContent>
         <CardActions className={classes.cardActions}>
-          <Button color='primary' onClick={handleSubmit}>
+          <Button color='primary' onClick={handleSubmit} disabled={loading}>
             Register
           </Button>
         </CardActions>
@@ -181,8 +210,10 @@ const Register = ({ dispatch }) => {
   )
 }
 
-const mapStateToProps = () => {
-  return {}
+const mapStateToProps = ({ loadingBar }) => {
+  return {
+    loading: loadingBar.default === 1 ? true : false,
+  }
 }
 
 export default connect(mapStateToProps)(Register)

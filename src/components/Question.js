@@ -138,7 +138,7 @@ const Question = ({ dispatch, question, users, authedUser }) => {
               component='h6'
               className={classes.answeredWouldText}
             >
-              Results:
+              Results
             </Typography>
             <div>
               <div className={classes.answeredOptionContainer}>

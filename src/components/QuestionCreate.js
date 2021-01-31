@@ -10,6 +10,7 @@ import {
 } from '@material-ui/core'
 
 import { connect } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 
 import {
   handleShowErrorSnackBar,
@@ -17,6 +18,7 @@ import {
 } from '../actions/snackbar'
 
 import { handleAddQuestion } from '../actions/questions'
+import { handleGetUsers } from '../actions/users'
 
 const useStyles = makeStyles({
   form: { textAlign: 'center' },
@@ -24,11 +26,11 @@ const useStyles = makeStyles({
     marginTop: 32,
   },
   orText: {
-      marginTop:10,
-      marginBottom:0
+    marginTop: 10,
+    marginBottom: 0,
   },
-  optionTwoInput:{
-      marginTop: -10
+  optionTwoInput: {
+    marginTop: -10,
   },
   cardActions: {
     justifyContent: 'flex-end',
@@ -37,6 +39,7 @@ const useStyles = makeStyles({
 
 const QuestionCreate = ({ dispatch, authedUser }) => {
   const classes = useStyles()
+  const history = useHistory()
 
   const [optionOne, setOptionOne] = useState('')
   const [optionTwo, setOptionTwo] = useState('')
@@ -55,15 +58,26 @@ const QuestionCreate = ({ dispatch, authedUser }) => {
   }
 
   const handleSubmit = () => {
-
-    if (optionOne.split(" ").length < 2 || optionTwo.split(" ").length < 2) {
-        dispatch(handleShowErrorSnackBar("Please, type two words at least"))
-        return
+    if (optionOne.split(' ').length < 2 || optionTwo.split(' ').length < 2) {
+      dispatch(
+        handleShowErrorSnackBar('Please, type two words at least on each input')
+      )
+      return
     }
 
-    dispatch(handleAddQuestion({ author: authedUser.id, optionOneText: optionOne, optionTwoText: optionTwo })).then(
+    dispatch(
+      handleAddQuestion({
+        author: authedUser.id,
+        optionOneText: optionOne,
+        optionTwoText: optionTwo,
+      })
+    ).then(
       () => {
         dispatch(handleShowSuccessSnackBar('Question created! Redirecting...'))
+        dispatch(handleGetUsers())
+        setTimeout(() => {
+          history.push('/')
+        }, 2000)
         setDefaultState()
       },
       (e) => dispatch(handleShowErrorSnackBar(e))
@@ -95,7 +109,12 @@ const QuestionCreate = ({ dispatch, authedUser }) => {
               fullWidth
               margin='normal'
             />
-            <Typography gutterBottom variant='h6' component='h2' className={classes.orText}>
+            <Typography
+              gutterBottom
+              variant='h6'
+              component='h2'
+              className={classes.orText}
+            >
               OR
             </Typography>
 

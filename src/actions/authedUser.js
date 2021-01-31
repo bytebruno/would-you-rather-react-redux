@@ -1,4 +1,5 @@
 import { signinUser, getLastAuthedUserData } from '../utils/api'
+import { hideLoading, showLoading } from 'react-redux-loading'
 
 export const SIGNIN_USER = 'SIGNIN_USER'
 export const SIGNOUT_USER = 'SIGNOUT_USER'
@@ -14,9 +15,10 @@ export const signoutUserAction = () => {
 
 export const handleSigninUser = (id, password) => {
   return (dispatch) => {
-    return signinUser(id, password).then((loggedUser) => {
-      dispatch(signinUserAction(loggedUser))
-    })
+    dispatch(showLoading())
+    return signinUser(id, password)
+      .then((loggedUser) => dispatch(signinUserAction(loggedUser)))
+      .then(() => dispatch(hideLoading()))
   }
 }
 

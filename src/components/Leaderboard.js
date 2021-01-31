@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Leaderboard = ({ dispatch, users }) => {
+const Leaderboard = ({ users }) => {
   const classes = useStyles()
 
   const orderUsersByScore = () =>
@@ -59,17 +59,14 @@ const Leaderboard = ({ dispatch, users }) => {
       : 1
   })
 
-  let orderedUsers = orderUsersByScore();
-
-  useEffect(() => {
-    dispatch(handleGetUsers()).then(() => {
-        orderedUsers = orderUsersByScore() 
-    })
-  },[])
+  const orderedUsers = orderUsersByScore();
 
   return (
     <div>
-      {orderedUsers.map((user) => (
+      {orderedUsers.map((user) => {
+         console.log(user)
+        return (
+       
         <Card key={user.id} className={classes.root} raised>
           <CardContent className={classes.cardContent}>
             <div className={classes.nameContainer}>
@@ -104,7 +101,7 @@ const Leaderboard = ({ dispatch, users }) => {
             </div>
           </CardContent>
         </Card>
-      ))}
+      )})}
     </div>
   )
 }
