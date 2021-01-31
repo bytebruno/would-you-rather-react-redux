@@ -11,12 +11,11 @@ import {
   Avatar,
 } from '@material-ui/core'
 
-import { getAvatar } from '../utils/avatar-helper'
-
-
 import { Link } from 'react-router-dom'
-
 import { connect } from 'react-redux'
+
+import { getAvatar } from '../utils/avatar-helper'
+import { signoutUserAction } from "../actions/authedUser";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Nav = ({ authedUser }) => {
+const Nav = ({ dispatch, authedUser }) => {
   const classes = useStyles()
 
   const [anchorEl, setAnchorEl] = React.useState(null)
@@ -45,6 +44,11 @@ const Nav = ({ authedUser }) => {
 
   const handleClose = () => {
     setAnchorEl(null)
+  }
+
+  const handleLogout = () => {
+    setAnchorEl(null)
+    dispatch(signoutUserAction())
   }
 
   return (
@@ -105,8 +109,7 @@ const Nav = ({ authedUser }) => {
                 open={open}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>Logout</MenuItem>
+                <MenuItem onClick={handleLogout}>Signout</MenuItem>
               </Menu>
             </div>
           )}

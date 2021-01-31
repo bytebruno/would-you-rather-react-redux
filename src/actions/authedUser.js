@@ -1,10 +1,15 @@
 import { signinUser, getLastAuthedUserData } from '../utils/api'
 
 export const SIGNIN_USER = 'SIGNIN_USER'
+export const SIGNOUT_USER = 'SIGNOUT_USER'
 export const GET_LAST_USER_DATA = 'GET_LAST_USER_DATA'
 
 const signinUserAction = (loggedUser) => {
   return { type: SIGNIN_USER, loggedUser }
+}
+
+export const signoutUserAction = () => {
+  return { type: SIGNOUT_USER }
 }
 
 export const handleSigninUser = (id, password) => {

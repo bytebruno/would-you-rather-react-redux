@@ -1,4 +1,4 @@
-import { SIGNIN_USER } from '../actions/authedUser'
+import { SIGNIN_USER, SIGNOUT_USER } from '../actions/authedUser'
 
 const authedUser = (state = null, action) => {
   const { loggedUser } = action
@@ -9,6 +9,8 @@ const authedUser = (state = null, action) => {
         ...state,
         ...loggedUser,
       }
+    case SIGNOUT_USER:
+      return null
     default:
       return state
   }
