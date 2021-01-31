@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
@@ -16,9 +16,13 @@ import FormControl from '@material-ui/core/FormControl'
 
 import { getAvatar } from '../utils/avatar-helper'
 import { handleShowErrorSnackBar } from '../actions/snackbar'
-import { handleSaveQuestionAnswer, handleGetQuestions } from '../actions/questions'
+import {
+  handleSaveQuestionAnswer,
+  handleGetQuestions,
+} from '../actions/questions'
 import { handleGetUsers } from '../actions/users'
 import { handleGetLastAuthedUserData } from '../actions/authedUser'
+import QuestionAnsweredProgressBar from './QuestionAnsweredProgressBar'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,6 +40,28 @@ const useStyles = makeStyles((theme) => ({
   wouldText: {
     fontSize: '1.60rem',
   },
+  answeredOptionContainer: {
+    position: 'relative',
+    marginBottom: 32,
+  },
+  answeredOptionContainer2: {
+    position: 'relative',
+  },
+  answeredWouldText: {
+    fontSize: '1.60rem',
+    marginBottom: 20,
+  },
+  answerText: {
+    fontSize: '1.1rem',
+  },
+  answerVotesText: {
+    fontSize: '0.8rem',
+    marginTop: -6,
+    fontWeight: 600,
+  },
+  yourVoteText: {
+    
+  },
   avatar: {
     width: 60,
     height: 60,
@@ -46,6 +72,30 @@ const Question = ({ dispatch, question, users, authedUser }) => {
   const classes = useStyles()
 
   const [value, setValue] = React.useState('optionOne')
+
+  let answeredResult = null
+
+  if (authedUser === null) return null
+
+  const isAnswered = authedUser.answers[question.id]
+
+  if (isAnswered) {
+    const optionOneVotes = question.optionOne.votes.length
+    const optionTwoVotes = question.optionTwo.votes.length
+    const totalVotes = optionOneVotes + optionTwoVotes
+
+    answeredResult = {
+      totalVotes: totalVotes,
+      optionOne: {
+        votes: optionOneVotes,
+        pct: (optionOneVotes * 100) / totalVotes,
+      },
+      optionTwo: {
+        votes: optionTwoVotes,
+        pct: (optionTwoVotes * 100) / totalVotes,
+      },
+    }
+  }
 
   const handleChange = (event) => {
     setValue(event.target.value)
@@ -58,16 +108,14 @@ const Question = ({ dispatch, question, users, authedUser }) => {
 
     dispatch(handleSaveQuestionAnswer(authedUserId, qid, answer)).then(
       () => {
-        console.log('teoricamente OK')
         dispatch(handleGetUsers())
         dispatch(handleGetQuestions())
         dispatch(handleGetLastAuthedUserData(authedUserId))
-       
       },
       (e) => dispatch(handleShowErrorSnackBar(e))
     )
   }
-
+  
   return (
     <Card className={classes.root} raised>
       <CardHeader
@@ -82,35 +130,120 @@ const Question = ({ dispatch, question, users, authedUser }) => {
         title={`${users[question.author].name} asks:`}
         subheader={new Date(question.timestamp).toLocaleDateString('en-US')}
       />
-      <CardContent className={classes.cardContent}>
-        <Typography variant='h6' component='h6' className={classes.wouldText}>
-          Would you rather
-        </Typography>
-        <FormControl component='fieldset'>
-          <RadioGroup
-            aria-label='would'
-            name='would'
-            value={value}
-            onChange={handleChange}
-          >
-            <FormControlLabel
-              value='optionOne'
-              control={<Radio />}
-              label={question.optionOne.text}
-            />
-            <FormControlLabel
-              value='optionTwo'
-              control={<Radio />}
-              label={question.optionTwo.text}
-            />
-          </RadioGroup>
-        </FormControl>
-      </CardContent>
-      <CardActions disableSpacing className={classes.cardActions}>
-        <Button color='primary' onClick={submitAnswer}>
-          Submit
-        </Button>
-      </CardActions>
+      {isAnswered ? (
+        <Fragment>
+          <CardContent className={classes.cardContent}>
+            <Typography
+              variant='h6'
+              component='h6'
+              className={classes.answeredWouldText}
+            >
+              Results:
+            </Typography>
+            <div>
+              <div className={classes.answeredOptionContainer}>
+                {question.optionOne.votes.includes(authedUser.id) ? (
+                  <Typography
+                    variant='subtitle1'
+                    component='p'
+                    className={classes.yourVoteText}
+                    color='secondary'
+                  >
+                    Your vote
+                  </Typography>
+                ) : null}
+                <Typography
+                  variant='h4'
+                  component='h4'
+                  className={classes.answerText}
+                >
+                  {`Would you rather ${question.optionOne.text}?`}
+                </Typography>
+
+                <QuestionAnsweredProgressBar
+                  value={answeredResult.optionOne.pct}
+                  label={question.optionOne.text}
+                />
+                <Typography
+                  variant='caption'
+                  component='p'
+                  className={classes.answerVotesText}
+                  color='textSecondary'
+                >
+                  {`${answeredResult.optionOne.votes} out of ${answeredResult.totalVotes} votes`}
+                </Typography>
+              </div>
+              <div className={classes.answeredOptionContainer2}>
+                {question.optionTwo.votes.includes(authedUser.id) ? (
+                  <Typography
+                    variant='subtitle1'
+                    component='p'
+                    className={classes.yourVoteText}
+                    color='secondary'
+                  >
+                    Your vote
+                  </Typography>
+                ): null}
+                <Typography
+                  variant='h4'
+                  component='h4'
+                  className={classes.answerText}
+                >
+                  {`Would you rather ${question.optionTwo.text}?`}
+                </Typography>
+                <QuestionAnsweredProgressBar
+                  value={answeredResult.optionTwo.pct}
+                  label={question.optionTwo.text}
+                />
+                <Typography
+                  variant='caption'
+                  component='p'
+                  className={classes.answerVotesText}
+                  color='textSecondary'
+                >
+                  {`${answeredResult.optionTwo.votes} out of ${answeredResult.totalVotes} votes`}
+                </Typography>
+              </div>
+            </div>
+          </CardContent>
+        </Fragment>
+      ) : (
+        <Fragment>
+          <CardContent className={classes.cardContent}>
+            <Typography
+              variant='h6'
+              component='h6'
+              className={classes.wouldText}
+            >
+              Would you rather
+            </Typography>
+            <FormControl component='fieldset'>
+              <RadioGroup
+                aria-label='would'
+                name='would'
+                value={value}
+                onChange={handleChange}
+              >
+                <FormControlLabel
+                  value='optionOne'
+                  control={<Radio />}
+                  label={question.optionOne.text}
+                />
+                <FormControlLabel
+                  value='optionTwo'
+                  control={<Radio />}
+                  label={question.optionTwo.text}
+                />
+              </RadioGroup>
+            </FormControl>
+          </CardContent>
+          <CardActions disableSpacing className={classes.cardActions}>
+            <Button color='primary' onClick={submitAnswer}>
+              Submit
+            </Button>
+          </CardActions>
+        </Fragment>
+      )}
     </Card>
   )
 }
