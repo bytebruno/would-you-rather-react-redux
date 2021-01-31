@@ -14,6 +14,7 @@ import Signin from './Signin'
 import Register from './Register'
 import Home from './Home'
 import Question from './Question'
+import QuestionCreate from './QuestionCreate'
 import GuardedRoute from './GuardedRoute'
 
 const App = ({ dispatch, loading }) => {
@@ -22,7 +23,7 @@ const App = ({ dispatch, loading }) => {
   useEffect(() => {
     dispatch(handleGetUsers())
     dispatch(handleGetQuestions())
-  }, [])
+  }, [dispatch])
 
   return (
     <Router>
@@ -36,6 +37,7 @@ const App = ({ dispatch, loading }) => {
                 <Route path='/signin' exact component={Signin} />
                 <Route path='/register' exact component={Register} />
                 <GuardedRoute path='/question/:id' exact component={Question} />
+                <GuardedRoute path='/add' exact component={QuestionCreate} />
                 <GuardedRoute path='/' exact component={Home} />
               </Fragment>
             </Container>

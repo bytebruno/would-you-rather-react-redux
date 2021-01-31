@@ -4,7 +4,10 @@ import MuiAlert from '@material-ui/lab/Alert'
 import { makeStyles } from '@material-ui/core/styles'
 
 import { connect } from 'react-redux'
-import { handleHideSuccessSnackBar, handleHideErrorSnackBar } from '../actions/snackbar'
+import {
+  handleHideSuccessSnackBar,
+  handleHideErrorSnackBar,
+} from '../actions/snackbar'
 
 const Alert = (props) => <MuiAlert elevation={6} variant='filled' {...props} />
 
@@ -20,10 +23,10 @@ const useStyles = makeStyles((theme) => ({
 const SnackBar = ({ dispatch, showSuccess, showError, message }) => {
   const classes = useStyles()
 
-  let successTimeout = null
-  let errorTimeout = null
-
   useEffect(() => {
+    let successTimeout = null
+    let errorTimeout = null
+    
     if (showSuccess) {
       successTimeout = setTimeout(() => {
         dispatch(handleHideSuccessSnackBar())

@@ -65,7 +65,7 @@ const Nav = ({ dispatch, authedUser }) => {
           </Button>
           <Button
             component={Link}
-            to={'/'}
+            to={'/add'}
             color='inherit'
             className={classes.root}
           >
@@ -73,7 +73,7 @@ const Nav = ({ dispatch, authedUser }) => {
           </Button>
           <Button
             component={Link}
-            to={'/'}
+            to={'/leaderboard'}
             color='inherit'
             className={classes.root}
           >
