@@ -1,5 +1,5 @@
 import { getUsers, addUser } from '../utils/api'
-import { hideLoading, showLoading } from 'react-redux-loading'
+import { showLoading } from 'react-redux-loading'
 
 export const RECEIVE_USERS = 'RECEIVE_USERS'
 export const ADD_USER = 'ADD_USER'
@@ -20,7 +20,7 @@ const addUserAction = (user) => {
 
 export const handleAddUser = (user) => {
   return (dispatch) => {
-    dispatch(showLoading())
+    dispatch(showLoading('main'))
     return addUser(user).then((savedUser) => dispatch(addUserAction(savedUser)))
   }
 }

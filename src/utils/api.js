@@ -18,6 +18,18 @@ export const getInitialData = () => {
   }))
 }
 
+export const getUpdatedData = (userId) => {
+  return Promise.all([
+    _getUsers(),
+    _getQuestions(),
+    _getLastAuthedUserData(userId)
+  ]).then(([users, questions, authedUser]) => ({
+    users,
+    questions,
+    authedUser
+  }))
+}
+
 export const getUsers = () => _getUsers()
 export const addUser = (user) => _addUser(user)
 export const signinUser = (id, password) => _signinUser(id, password)

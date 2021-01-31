@@ -106,22 +106,23 @@ const Register = ({ dispatch, loading }) => {
       })
     ).then(
       (action) => {
+        dispatch(hideLoading('main'))
         dispatch(handleShowSuccessSnackBar('User registered! Redirecting...'))
         dispatch(handleSigninUser(action.user.id, action.user.password)).then(
           () => {
-            dispatch(hideLoading())
+            dispatch(hideLoading('main'))
             history.push('/')
             return null
           },
           (e) => {
-            dispatch(hideLoading())
+            dispatch(hideLoading('main'))
             dispatch(handleShowErrorSnackBar(e))
           }
         )
         setDefaultState()
       },
       (e) => {
-        dispatch(hideLoading())
+        dispatch(hideLoading('main'))
         dispatch(handleShowErrorSnackBar(e))
       }
     )
@@ -212,7 +213,7 @@ const Register = ({ dispatch, loading }) => {
 
 const mapStateToProps = ({ loadingBar }) => {
   return {
-    loading: loadingBar.default === 1 ? true : false,
+    loading: loadingBar.main !== 0 ? true : false
   }
 }
 

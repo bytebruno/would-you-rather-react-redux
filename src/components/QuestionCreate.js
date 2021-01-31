@@ -77,11 +77,14 @@ const QuestionCreate = ({ dispatch, authedUser, loading }) => {
         setDefaultState()
         dispatch(handleShowSuccessSnackBar('Question created! Redirecting...'))
         dispatch(handleGetUsers()).then(() => {
-          dispatch(hideLoading())
+          dispatch(hideLoading('main'))
           history.push('/')
         })
       },
-      (e) => dispatch(handleShowErrorSnackBar(e))
+      (e) => {
+        dispatch(hideLoading('main'))
+        dispatch(handleShowErrorSnackBar(e))
+      } 
     )
   }
 
@@ -141,7 +144,7 @@ const QuestionCreate = ({ dispatch, authedUser, loading }) => {
 }
 
 const mapStateToProps = ({ authedUser, loadingBar }) => {
-  return { authedUser, loading: loadingBar.default === 1 ? true : false }
+  return { authedUser, loading: loadingBar.main !== 0 ? true : false }
 }
 
 export default connect(mapStateToProps)(QuestionCreate)

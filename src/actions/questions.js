@@ -21,6 +21,7 @@ const saveQuestionAnswerAction = () => {
 
 export const handleSaveQuestionAnswer = (authedUserId, qid, answer) => {
   return (dispatch) => {
+    dispatch(showLoading('main'))
     return saveQuestionAnswer({authedUserId, qid, answer}).then(() => dispatch(saveQuestionAnswerAction()))
   }
 }
@@ -31,7 +32,7 @@ const addQuestionAction = (question) => {
 
 export const handleAddQuestion = (question) => {
   return (dispatch) => {
-    dispatch(showLoading())
+    dispatch(showLoading('main'))
     return addQuestion(question).then((savedQuestion) => dispatch(addQuestionAction(savedQuestion)))
   }
 }

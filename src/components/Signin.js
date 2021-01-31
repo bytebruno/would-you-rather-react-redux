@@ -52,16 +52,20 @@ const Signin = ({ dispatch, authedUser, loading }) => {
   }
 
   const handleSubmit = () => {
-    dispatch(handleSigninUser(userId, password)).then(
-      () => {
+    dispatch(handleSigninUser(userId, password))
+      .then(
+        () => {
+          dispatch(hideLoading('main'))
+        },
+        (e) => {
+          dispatch(handleShowErrorSnackBar(e))
+          dispatch(hideLoading('main'))
+        }
+      )
+      .then(() => {
         history.push('/')
         return null
-      },
-      (e) => {
-        dispatch(handleShowErrorSnackBar(e))
-        dispatch(hideLoading())
-      }
-    )
+      })
   }
 
   return (
@@ -112,7 +116,7 @@ const Signin = ({ dispatch, authedUser, loading }) => {
           </form>
         </CardContent>
         <CardActions className={classes.cardActions}>
-          <Button color='primary' onClick={handleSubmit}  disabled={loading}>
+          <Button color='primary' onClick={handleSubmit} disabled={loading}>
             Sign In
           </Button>
         </CardActions>
@@ -127,7 +131,12 @@ const Signin = ({ dispatch, authedUser, loading }) => {
           OR
         </Typography>
 
-        <Button color='primary' variant='outlined' onClick={redirectToRegister} disabled={loading}>
+        <Button
+          color='primary'
+          variant='outlined'
+          onClick={redirectToRegister}
+          disabled={loading}
+        >
           Register
         </Button>
       </div>
@@ -138,7 +147,7 @@ const Signin = ({ dispatch, authedUser, loading }) => {
 const mapStateToProps = ({ authedUser, loadingBar }) => {
   return {
     authedUser,
-    loading: loadingBar.default === 1 ? true : false
+    loading: loadingBar.main !== 0 ? true : false
   }
 }
 

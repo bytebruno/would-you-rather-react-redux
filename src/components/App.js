@@ -27,7 +27,7 @@ const App = ({ dispatch, loading }) => {
   return (
     <Router>
       <Fragment>
-        <LoadingBar style={{ backgroundColor: 'white' }} />
+        <LoadingBar style={{ backgroundColor: 'white' }} scope='main'/>
         <div>
           <Nav />
           <Container maxWidth='sm' className={classes.container}>
@@ -62,7 +62,7 @@ const useStyles = makeStyles({
 const mapStateToProps = ({ authedUser, loadingBar }) => {
   return {
     authedUser,
-    loading: loadingBar.default === 1 ? true : false
+    loading: loadingBar.main !== 0 ? true : false
   }
 }
 

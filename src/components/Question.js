@@ -16,13 +16,11 @@ import FormControl from '@material-ui/core/FormControl'
 
 import { getAvatar } from '../utils/avatar-helper'
 import { handleShowErrorSnackBar } from '../actions/snackbar'
-import {
-  handleSaveQuestionAnswer,
-  handleGetQuestions,
-} from '../actions/questions'
-import { handleGetUsers } from '../actions/users'
-import { handleGetLastAuthedUserData } from '../actions/authedUser'
+import { hideLoading } from 'react-redux-loading'
+import { handleSaveQuestionAnswer } from '../actions/questions'
+
 import QuestionAnsweredProgressBar from './QuestionAnsweredProgressBar'
+import { handleUpdatedData } from '../actions/shared'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -59,16 +57,14 @@ const useStyles = makeStyles((theme) => ({
     marginTop: -6,
     fontWeight: 600,
   },
-  yourVoteText: {
-    
-  },
+  yourVoteText: {},
   avatar: {
     width: 60,
     height: 60,
   },
 }))
 
-const Question = ({ dispatch, question, users, authedUser }) => {
+const Question = ({ dispatch, question, users, authedUser, loading }) => {
   const classes = useStyles()
 
   const [value, setValue] = React.useState('optionOne')
@@ -108,14 +104,17 @@ const Question = ({ dispatch, question, users, authedUser }) => {
 
     dispatch(handleSaveQuestionAnswer(authedUserId, qid, answer)).then(
       () => {
-        dispatch(handleGetUsers())
-        dispatch(handleGetQuestions())
-        dispatch(handleGetLastAuthedUserData(authedUserId))
+        dispatch(handleUpdatedData(authedUserId)).then(() => {
+          dispatch(hideLoading('main'))
+        })
       },
-      (e) => dispatch(handleShowErrorSnackBar(e))
+      (e) => {
+        dispatch(handleShowErrorSnackBar(e))
+        dispatch(hideLoading('main'))
+      }
     )
   }
-  
+
   return (
     <Card className={classes.root} raised>
       <CardHeader
@@ -183,7 +182,7 @@ const Question = ({ dispatch, question, users, authedUser }) => {
                   >
                     Your vote
                   </Typography>
-                ): null}
+                ) : null}
                 <Typography
                   variant='h4'
                   component='h4'
@@ -238,7 +237,7 @@ const Question = ({ dispatch, question, users, authedUser }) => {
             </FormControl>
           </CardContent>
           <CardActions disableSpacing className={classes.cardActions}>
-            <Button color='primary' onClick={submitAnswer}>
+            <Button color='primary' onClick={submitAnswer} disabled={loading}>
               Submit
             </Button>
           </CardActions>
@@ -248,7 +247,10 @@ const Question = ({ dispatch, question, users, authedUser }) => {
   )
 }
 
-const mapStateToProps = ({ questions, users, authedUser }, props) => {
+const mapStateToProps = (
+  { questions, users, authedUser, loadingBar },
+  props
+) => {
   const { id } = props.match.params
   const question = questions[id]
 
@@ -257,6 +259,7 @@ const mapStateToProps = ({ questions, users, authedUser }, props) => {
     question,
     users,
     authedUser,
+    loading: loadingBar.main !== 0 ? true : false
   }
 }
 
