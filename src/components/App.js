@@ -16,6 +16,7 @@ import Home from './Home'
 import Question from './Question'
 import QuestionCreate from './QuestionCreate'
 import GuardedRoute from './GuardedRoute'
+import Leaderboard from './Leaderboard'
 
 const App = ({ dispatch, loading }) => {
   const classes = useStyles()
@@ -38,6 +39,7 @@ const App = ({ dispatch, loading }) => {
                 <Route path='/register' exact component={Register} />
                 <GuardedRoute path='/question/:id' exact component={Question} />
                 <GuardedRoute path='/add' exact component={QuestionCreate} />
+                <GuardedRoute path='/leaderboard' exact component={Leaderboard} />
                 <GuardedRoute path='/' exact component={Home} />
               </Fragment>
             </Container>
