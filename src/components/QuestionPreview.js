@@ -1,5 +1,5 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
@@ -8,6 +8,9 @@ import CardActions from '@material-ui/core/CardActions'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
+
+import { connect } from 'react-redux'
+import { setRedirectPath } from '../actions/navigation'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
   },
   wouldText: {
-    fontSize: '1.60rem'
+    fontSize: '1.60rem',
   },
   header: {
     paddingBottom: 0,
@@ -31,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const QuestionPreview = ({ question, authorName, userAvatar }) => {
+const QuestionPreview = ({ dispatch, question, authorName, userAvatar }) => {
   const classes = useStyles()
 
   if (question === undefined) return null
@@ -63,7 +66,12 @@ const QuestionPreview = ({ question, authorName, userAvatar }) => {
         </Typography>
       </CardContent>
       <CardActions disableSpacing className={classes.cardActions}>
-        <Button component={Link} to={`/question/${question.id}`} color='primary'>
+        <Button
+          component={Link}
+          to={`/question/${question.id}`}
+          onClick={() => dispatch(setRedirectPath(`/question/${question.id}`))}
+          color='primary'
+        >
           View Poll
         </Button>
       </CardActions>
@@ -71,4 +79,4 @@ const QuestionPreview = ({ question, authorName, userAvatar }) => {
   )
 }
 
-export default QuestionPreview
+export default connect()(QuestionPreview)

@@ -34,7 +34,7 @@ const useStyles = makeStyles({
   },
 })
 
-const Signin = ({ dispatch, authedUser, loading }) => {
+const Signin = ({ dispatch, authedUser, loading, navigation }) => {
   const classes = useStyles()
   const history = useHistory()
 
@@ -43,9 +43,9 @@ const Signin = ({ dispatch, authedUser, loading }) => {
 
   useEffect(() => {
     if (authedUser !== null) {
-      history.push('/')
+      history.push(navigation.path)
     }
-  }, [authedUser, history])
+  }, [authedUser, history, navigation.path])
 
   const redirectToRegister = () => {
     history.push('/register')
@@ -63,7 +63,7 @@ const Signin = ({ dispatch, authedUser, loading }) => {
         }
       )
       .then(() => {
-        history.push('/')
+        history.push(navigation.path)
         return null
       })
   }
@@ -144,10 +144,11 @@ const Signin = ({ dispatch, authedUser, loading }) => {
   )
 }
 
-const mapStateToProps = ({ authedUser, loadingBar }) => {
+const mapStateToProps = ({ authedUser, loadingBar, navigation }) => {
   return {
     authedUser,
-    loading: loadingBar.main !== 0 ? true : false
+    loading: loadingBar.main !== 0 ? true : false,
+    navigation
   }
 }
 

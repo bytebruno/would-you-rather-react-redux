@@ -4,6 +4,7 @@ import { makeStyles, Container } from '@material-ui/core'
 
 import { connect } from 'react-redux'
 import { handleInitialData } from '../actions/shared'
+import { handleSetRedirectPath } from '../actions/navigation'
 
 import LoadingBar from 'react-redux-loading'
 
@@ -19,6 +20,10 @@ import Leaderboard from './Leaderboard'
 
 const App = ({ dispatch, loading }) => {
   const classes = useStyles()
+
+  if (window.location.pathname !== '/signin') {
+    dispatch(handleSetRedirectPath(window.location.pathname))
+  }
 
   useEffect(() => {
     dispatch(handleInitialData())
@@ -42,7 +47,7 @@ const App = ({ dispatch, loading }) => {
               </Fragment>
             )}
             <GuardedRoute path='/add' exact component={QuestionCreate} />
-            <GuardedRoute path='/question/:id' exact component={Question} />
+            <Route path='/question/:id' exact component={Question} />
             <Route path='/signin' exact component={Signin} />
             <Route path='/register' exact component={Register} />
           </Container>

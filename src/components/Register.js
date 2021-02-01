@@ -52,7 +52,7 @@ const useStyles = makeStyles({
   },
 })
 
-const Register = ({ dispatch, loading }) => {
+const Register = ({ dispatch, loading, navigation }) => {
   const classes = useStyles()
   const history = useHistory()
 
@@ -111,7 +111,7 @@ const Register = ({ dispatch, loading }) => {
         dispatch(handleSigninUser(action.user.id, action.user.password)).then(
           () => {
             dispatch(hideLoading('main'))
-            history.push('/')
+            history.push(navigation.path)
             return null
           },
           (e) => {
@@ -211,9 +211,10 @@ const Register = ({ dispatch, loading }) => {
   )
 }
 
-const mapStateToProps = ({ loadingBar }) => {
+const mapStateToProps = ({ loadingBar, navigation }) => {
   return {
-    loading: loadingBar.main !== 0 ? true : false
+    loading: loadingBar.main !== 0 ? true : false,
+    navigation
   }
 }
 

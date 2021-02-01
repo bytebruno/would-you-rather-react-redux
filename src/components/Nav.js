@@ -16,6 +16,7 @@ import { connect } from 'react-redux'
 
 import { getAvatar } from '../utils/avatar-helper'
 import { signoutUserAction } from "../actions/authedUser";
+import { setRedirectPath } from "../actions/navigation";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -60,6 +61,7 @@ const Nav = ({ dispatch, authedUser }) => {
             to={'/'}
             color='inherit'
             className={classes.root}
+            onClick={() => dispatch(setRedirectPath('/'))}
           >
             Home
           </Button>
@@ -68,6 +70,7 @@ const Nav = ({ dispatch, authedUser }) => {
             to={'/add'}
             color='inherit'
             className={classes.root}
+            onClick={() => dispatch(setRedirectPath('/add'))}
           >
             New Question
           </Button>
@@ -76,6 +79,7 @@ const Nav = ({ dispatch, authedUser }) => {
             to={'/leaderboard'}
             color='inherit'
             className={classes.root}
+            onClick={() => dispatch(setRedirectPath('/leaderboard'))}
           >
             Leader Board
           </Button>
