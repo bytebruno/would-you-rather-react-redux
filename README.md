@@ -16,8 +16,17 @@
 
 ## Screenshots
 
+### Login
 ![Login](docs/screenshots/s1.png)
+
+### Choose Avatar
 ![Choose Avatar](docs/screenshots/s2.png)
+
+### Unanswered Questions
 ![Unanswered Questions](docs/screenshots/s3.png)
+
+### Answered Question
 ![Answered Question](docs/screenshots/s4.png)
+
+### Leaderboard
 ![Leaderboard](docs/screenshots/s5.png)
