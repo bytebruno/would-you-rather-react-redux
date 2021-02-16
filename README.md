@@ -13,3 +13,11 @@
 * ReactJs
 * Redux
 * Material UI
+
+## Screenshots
+
+![Login](docs/screenshots/s1.png)
+![Choose Avatar](docs/screenshots/s2.png)
+![Unanswered Questions](docs/screenshots/s3.png)
+![Answered Question](docs/screenshots/s4.png)
+![Leaderboard](docs/screenshots/s5.png)
